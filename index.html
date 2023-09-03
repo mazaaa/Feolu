@@ -53,17 +53,14 @@
         const video = document.getElementById('video');
         const loadingGif = document.getElementById('loading-gif');
 
-        // Hide the loading GIF and show the video when it's fully loaded
+        // Hide the loading GIF when the video is fully loaded
         video.addEventListener('loadeddata', () => {
             loadingGif.style.display = 'none';
-            video.style.display = 'block';
-        });
 
-        // You can also add other event listeners for playback events, e.g., play, pause, etc.
-        // For full-screen playback, you may need to handle it with JavaScript as well.
+            // Start playing the video
+            video.play();
 
-        // Function to toggle fullscreen mode
-        function toggleFullScreen() {
+            // Request full screen after the video has started playing
             if (video.requestFullscreen) {
                 video.requestFullscreen();
             } else if (video.mozRequestFullScreen) {
@@ -71,10 +68,9 @@
             } else if (video.webkitRequestFullscreen) {
                 video.webkitRequestFullscreen();
             }
-        }
+        });
 
-        // Toggle fullscreen on video click
-        video.addEventListener('click', toggleFullScreen);
+        // You can also add other event listeners for playback events, e.g., play, pause, etc.
     </script>
 </body>
 </html>
