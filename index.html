@@ -49,18 +49,29 @@
         </video>
     </div>
 
-    <script>
+   <script>
         const video = document.getElementById('video');
         const loadingGif = document.getElementById('loading-gif');
+        let videoLoaded = false;
 
-        // Hide the loading GIF when the video is fully loaded
-        video.addEventListener('loadeddata', () => {
+        // Function to hide the loading GIF
+        function hideLoadingGif() {
             loadingGif.style.display = 'none';
+            if (videoLoaded) {
+                video.play();
+            }
+        }
 
-            // Start playing the video
-            video.play();
+        // Wait for the video to be ready to play
+        video.addEventListener('canplaythrough', () => {
+            if (!videoLoaded) {
+                videoLoaded = true;
+                setTimeout(hideLoadingGif, 3000); // Wait 3 seconds after onloadstart
+            }
+        });
 
-            // Request full screen after the video has started playing
+        // Request full screen after the video has started playing
+        video.addEventListener('playing', () => {
             if (video.requestFullscreen) {
                 video.requestFullscreen();
             } else if (video.mozRequestFullScreen) {
@@ -70,7 +81,10 @@
             }
         });
 
-        // You can also add other event listeners for playback events, e.g., play, pause, etc.
+        // Show loading GIF initially
+        video.addEventListener('loadstart', () => {
+            loadingGif.style.display = 'flex';
+        });
     </script>
 </body>
 </html>
