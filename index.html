@@ -52,23 +52,37 @@
    <script>
         const video = document.getElementById('video');
         const loadingGif = document.getElementById('loading-gif');
-        let videoLoaded = false;
 
-        // Function to hide the loading GIF
-        function hideLoadingGif() {
-            loadingGif.style.display = 'none';
-            if (videoLoaded) {
-                video.play();
+        var startDate = new Date();
+        var startTime = startDate.getTime();
+
+        function seconds_elapsed() {
+            var date_now = new Date();
+            var time_now = date_now.getTime();
+            var time_diff = time_now – startTime;
+            var seconds_elapsed = Math.floor(time_diff/1000);
+            return (seconds_elapsed);
+        }
+
+        function testTimePastedReadiness() {
+            var seconds_passed = seconds_elapsed();
+            if(seconds_passed < 2){
+                setTimeout(hideLoadingGif, 2000);
+            } else {
+                hideLoadingGif();
             }
         }
 
-        // Wait for the video to be ready to play
-        video.addEventListener('canplaythrough', () => {
-            if (!videoLoaded) {
-                videoLoaded = true;
-                setTimeout(hideLoadingGif, 3000); // Wait 3 seconds after onloadstart
-            }
-        });
+        // Function to hide the loading GIF and start the video
+        function hideLoadingGif() {
+            loadingGif.style.display = 'none';
+            video.play();
+        }
+
+        video.addEventListener('canplaythrough', testTimePastedReadiness);
+
+
+
 
         // Request full screen after the video has started playing
         video.addEventListener('playing', () => {
@@ -79,11 +93,6 @@
             } else if (video.webkitRequestFullscreen) {
                 video.webkitRequestFullscreen();
             }
-        });
-
-        // Show loading GIF initially
-        video.addEventListener('loadstart', () => {
-            loadingGif.style.display = 'flex';
         });
     </script>
 </body>
